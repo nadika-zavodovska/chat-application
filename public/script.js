@@ -26,6 +26,9 @@ async function displayMessages() {
 }
 
 document.getElementById('chat-form-block').addEventListener('submit', async function (e) {
+    // Prevent the page from reloading
+    e.preventDefault();
+
     // Get name and text from the form inputs
     const name = document.getElementById('name').value.trim();
     const text = document.getElementById('text').value.trim();
