@@ -23,4 +23,26 @@ async function displayMessages() {
     }
 }
 
+document.getElementById('chat-form-block').addEventListener('submit', async function (e) {
+    // Get name and text from the form inputs
+    const name = document.getElementById('name').value.trim();
+    const text = document.getElementById('text').value.trim();  
+
+    // Sending the data from the form to the server
+    try {
+        const response = await fetch('http://localhost:3000/messages', {
+            method: 'POST',
+            // Send data in JSON
+            headers: { 'Content-Type': 'application/json' },
+            // Convert our data to JSON string
+            body: JSON.stringify({ name, text }),
+        });
+        
+        displayMessages();
+    } catch (error) {        
+        console.error('Send error:', error);
+    }
+});
+
+
 window.onload = displayMessages;
