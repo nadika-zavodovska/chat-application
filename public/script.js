@@ -2,13 +2,15 @@
 async function displayMessages() {
     try {
         const response = await fetch('http://localhost:3000/messages');
-        
+        // If something went wrong
+        if (!response.ok) throw new Error('Error: Failed to load messages');
         // Convert response to the JavaScript object
         const messages = await response.json();
 
         // Get message-block and clear it
         const messagesBlock = document.getElementById('messages-block');
-        
+        messagesBlock.innerHTML = '';
+
         // loop through messages and add each message to the messages block on the page
         messages.forEach((message) => {
             // Create div with name and message text
@@ -26,7 +28,7 @@ async function displayMessages() {
 document.getElementById('chat-form-block').addEventListener('submit', async function (e) {
     // Get name and text from the form inputs
     const name = document.getElementById('name').value.trim();
-    const text = document.getElementById('text').value.trim();  
+    const text = document.getElementById('text').value.trim();
 
     // Sending the data from the form to the server
     try {
@@ -37,12 +39,11 @@ document.getElementById('chat-form-block').addEventListener('submit', async func
             // Convert our data to JSON string
             body: JSON.stringify({ name, text }),
         });
-        
+
         displayMessages();
-    } catch (error) {        
+    } catch (error) {
         console.error('Send error:', error);
     }
 });
-
 
 window.onload = displayMessages;
