@@ -1,7 +1,10 @@
 // Fetch messages from the server and display on the page
 async function displayMessages() {
     try {
-        const response = await fetch('http://localhost:3000/messages');
+        // const response = await fetch('http://localhost:3000/messages');
+        const response = await fetch(
+            'https://nadika-zavodovska-live-chat.hosting.codeyourfuture.io/messages'
+        );
         // If something went wrong
         if (!response.ok) throw new Error('Error: Failed to load messages');
         // Convert response to the JavaScript object
@@ -41,13 +44,16 @@ document.getElementById('chat-form-block').addEventListener('submit', async func
 
     // Sending the data from the form to the server
     try {
-        const response = await fetch('http://localhost:3000/messages', {
-            method: 'POST',
-            // Send data in JSON
-            headers: { 'Content-Type': 'application/json' },
-            // Convert our data to JSON string
-            body: JSON.stringify({ name, text }),
-        });
+        const response = await fetch(
+            'https://nadika-zavodovska-live-chat.hosting.codeyourfuture.io/messages',
+            {
+                method: 'POST',
+                // Send data in JSON
+                headers: { 'Content-Type': 'application/json' },
+                // Convert our data to JSON string
+                body: JSON.stringify({ name, text }),
+            }
+        );
 
         // If the server returns error, show an alert
         if (!response.ok) {
