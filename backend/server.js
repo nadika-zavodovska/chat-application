@@ -21,6 +21,7 @@ const FILE_PATH = path.resolve(__dirname, 'messages.json');
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 
 app.use(express.json());
+
 // Function to read messages from the messages.json file
 async function readMessages() {
     try {
@@ -36,6 +37,10 @@ async function writeMessages(messages) {
     // Convert JavaScript object to text, save it in the file
     await fs.writeFile(FILE_PATH, JSON.stringify(messages, null, 2));
 }
+
+app.get('/', (req, res) => {
+    res.send('<p>Backend established.</p>');
+});
 
 app.get('/messages', async (req, res) => {
     // Get messages from the file
