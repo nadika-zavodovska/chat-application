@@ -2,8 +2,15 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
+import cors from 'cors';
 
 const app = express();
+
+app.use(
+    cors({
+        origin: 'https://nadika-zavodovska-live-chat-frontend.hosting.codeyourfuture.io',
+    })
+);
 
 const PORT = 3000;
 
@@ -57,6 +64,6 @@ app.post('/messages', async (req, res) => {
 });
 
 // Start the server on the port which we specify in the PORT variable
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

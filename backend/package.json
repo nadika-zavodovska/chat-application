@@ -20,6 +20,7 @@
   "homepage": "https://github.com/nadika-zavodovska/chat-application#readme",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0"
   }
 }
