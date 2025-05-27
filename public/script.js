@@ -33,6 +33,12 @@ document.getElementById('chat-form-block').addEventListener('submit', async func
     const name = document.getElementById('name').value.trim();
     const text = document.getElementById('text').value.trim();
 
+    // If name and text fields are empty, error alert
+    if (!name || !text) {
+        alert("Name and text fields can't be empty.");
+        return;
+    }
+
     // Sending the data from the form to the server
     try {
         const response = await fetch('http://localhost:3000/messages', {
@@ -43,8 +49,18 @@ document.getElementById('chat-form-block').addEventListener('submit', async func
             body: JSON.stringify({ name, text }),
         });
 
+        // If the server returns error, show an alert
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert(errorData.message || 'Failed to send message');
+            return;
+        }
+        // Clear the form and call displayMessages function
+        document.getElementById('chat-form-block').reset();
         displayMessages();
     } catch (error) {
+        // If message can't be sent, show alert message
+        alert('Error sending message.');
         console.error('Send error:', error);
     }
 });
