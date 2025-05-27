@@ -1,7 +1,6 @@
 {
   "name": "chat-application",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -18,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/nadika-zavodovska/chat-application/issues"
   },
-  "homepage": "https://github.com/nadika-zavodovska/chat-application#readme"
+  "homepage": "https://github.com/nadika-zavodovska/chat-application#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
