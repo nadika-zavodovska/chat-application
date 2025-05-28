@@ -10,7 +10,7 @@ import { server as WebSocketServer } from 'websocket';
 const app = express();
 
 app.use(
-    cors({ origin: 'https://nadika-zavodovska-live-chat-websockets-frontend.hosting.codeyourfuture.io/' })
+    cors({ origin: 'https://nadika-zavodovska-live-chat-websockets-frontend.hosting.codeyourfuture.io' })
 );
 // app.use(cors({ origin: '*' }));
 
