@@ -1,5 +1,5 @@
 // Make a WebSocket connectio
-const wsHost = new WebSocket('ws://localhost:3000');
+const wsHost = new WebSocket('wss://nadika-zavodovska-live-chat-backend-websockets.hosting.codeyourfuture.io');
 
 // Print message in console when webSocket connection is open 
 wsHost.addEventListener('open', () => {
