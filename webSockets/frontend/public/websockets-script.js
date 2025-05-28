@@ -26,7 +26,9 @@ function showMessage(message) {
 // Function to load all the m,essages when page loads
 async function loadMessages() {
     // fetch messages from server 
-    const res = await fetch('/messages');
+    const res = await fetch(
+        'https://nadika-zavodovska-live-chat-backend-websockets.hosting.codeyourfuture.io/messages'
+    );
     // Read messages as json 
     const messages = await res.json();
     // Show all messages on the page 
@@ -46,7 +48,7 @@ document.getElementById('chat-form-block').addEventListener('submit', async func
     }
 
     // Send a new message to the server using post method
-    await fetch('/messages', {
+    await fetch('https://nadika-zavodovska-live-chat-backend-websockets.hosting.codeyourfuture.io/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: userName, text: userText }),
