@@ -7,9 +7,7 @@ import cors from 'cors';
 const app = express();
 
 app.use(
-    cors({
-        origin: 'https://nadika-zavodovska-live-chat-frontend.hosting.codeyourfuture.io',
-    })
+    cors({ origin: 'https://nadika-zavodovska-live-chat-frontend.hosting.codeyourfuture.io', })
 );
 
 const PORT = 3000;
@@ -17,6 +15,9 @@ const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const FILE_PATH = path.resolve(__dirname, 'messages.json');
+
+// For storing callbacks
+const callbacksForNewMessages = [];
 
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 
@@ -43,10 +44,29 @@ app.get('/', (req, res) => {
 });
 
 app.get('/messages', async (req, res) => {
-    // Get messages from the file
+    // Get messages from the file and slice only new messages
     const messages = await readMessages();
-    // Send messages (JSON response)
+    const since = parseInt(req.query.since || 0);
+    const messagesToSend = messages.slice(since);
+
+    // If no new messages, store callbacks 
+    if (messagesToSend.length === 0) {
+        callbacksForNewMessages.push((newMessages) => {
+            res.json(newMessages);
+        });
+        
+        // If no new message after 20 sec, send an empty array, remove callback
+        setTimeout(() => {
+            const index = callbacksForNewMessages.indexOf(res.send);
+            if (index !== -1) {
+                callbacksForNewMessages.splice(index, 1);
+                res.json([]);
+            }
+        }, 20000);
+    } else {
+    // If there are new messages, send messages (JSON response)
     res.json(messages);
+    }
 });
 
 // A user send a new message, save it
@@ -60,10 +80,16 @@ app.post('/messages', async (req, res) => {
 
     // Read messages
     const messages = await readMessages();
-    // Push a new message to all messages list
-    messages.push({ name, text });
+    const newMessage = { name, text };
+    messages.push(newMessage);
     // Save mesages to the file
     await writeMessages(messages);
+
+    // Read messages, add a new message, and store it 
+    while (callbacksForNewMessages.length > 0) {
+        const callback = callbacksForNewMessages.pop();
+        callback([newMessage]);
+    }
     // Send successful message
     res.status(201).json({ message: 'Message added successfully.' });
 });

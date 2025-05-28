@@ -2,9 +2,7 @@
 async function displayMessages() {
     try {
         // const response = await fetch('http://localhost:3000/messages');
-        const response = await fetch(
-            'https://nadika-zavodovska-live-chat.hosting.codeyourfuture.io/messages'
-        );
+        const response = await fetch('https://nadika-zavodovska-live-chat.hosting.codeyourfuture.io/messages');
         // If something went wrong
         if (!response.ok) throw new Error('Error: Failed to load messages');
         // Convert response to the JavaScript object
