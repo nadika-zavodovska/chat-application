@@ -31,12 +31,12 @@ function showMessage(message) {
     containerMsg.appendChild(content);
 
     const likeBtn = document.createElement('button');
-    likeBtn.textContent = `👍 (${message.likes || 0}) `;
+    likeBtn.textContent = `👍 ${message.likes || 0} `;
     likeBtn.onclick = () => sendReaction(message.id, 'like');
     containerMsg.appendChild(likeBtn);
 
     const dislikeBtn = document.createElement('button');
-    dislikeBtn.textContent = `👎 (${message.dislikes || 0})`;
+    dislikeBtn.textContent = `👎 ${message.dislikes || 0}`;
     dislikeBtn.onclick = () => sendReaction(message.id, 'dislike');      
     containerMsg.appendChild(dislikeBtn);    
 }

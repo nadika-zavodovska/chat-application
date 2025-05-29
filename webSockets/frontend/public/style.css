@@ -51,6 +51,9 @@ form {
     background-color: rgb(117, 239, 255);
     color: rgb(1, 55, 92);
 }
+#messages-block button{
+    cursor: pointer;
+}
 
 @media (max-width: 560px) {
     form {
