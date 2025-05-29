@@ -1,5 +1,6 @@
-// Make a WebSocket connectio
+// Make a WebSocket connection
 const wsHost = new WebSocket('wss://nadika-zavodovska-live-chat-backend-websockets.hosting.codeyourfuture.io');
+// const wsHost = new WebSocket('http://localhost:3000/messages');
 
 // Print message in console when webSocket connection is open 
 wsHost.addEventListener('open', () => {
@@ -12,15 +13,50 @@ wsHost.addEventListener('message', (event) => {
     // If the command is send-message, show it on the page 
     if (msg.command === 'send-message') {
         showMessage(msg.message);
+    } else if (msg.command === 'update-reaction') {
+        updateReactions(msg.message);
     }
 });
 
 // Function to create a div block for a new message and show it 
 function showMessage(message) {
     const messagesBlock = document.getElementById('messages-block');
-    const newMessage = document.createElement('div');
-    newMessage.textContent = `- ${message.name}: ${message.text}`;
-    messagesBlock.appendChild(newMessage);
+
+    const containerMsg = document.createElement('div');
+    containerMsg.id = `message-${message.id}`;
+    messagesBlock.appendChild(containerMsg);
+
+    const content = document.createElement('span');
+    content.textContent = `- ${message.name}: ${message.text} `;
+    containerMsg.appendChild(content);
+
+    const likeBtn = document.createElement('button');
+    likeBtn.textContent = `👍 (${message.likes || 0}) `;
+    likeBtn.onclick = () => sendReaction(message.id, 'like');
+    containerMsg.appendChild(likeBtn);
+
+    const dislikeBtn = document.createElement('button');
+    dislikeBtn.textContent = `👎 (${message.dislikes || 0})`;
+    dislikeBtn.onclick = () => sendReaction(message.id, 'dislike');      
+    containerMsg.appendChild(dislikeBtn);    
+}
+
+function updateReactions(reaction) {
+    const containerReactions = document.getElementById(`message-${reaction.id}`);
+    if (!containerReactions) return;
+
+    const buttonsReactions = containerReactions.querySelectorAll('button');
+    buttonsReactions[0].textContent = `👍 ${reaction.likes}`;
+    buttonsReactions[1].textContent = `👎 ${reaction.dislikes}`;
+}
+
+async function sendReaction(messageId, action) {
+    await fetch('https://nadika-zavodovska-live-chat-backend-websockets.hosting.codeyourfuture.io/messages/react',
+        {        
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageId, action }),
+        });
 }
 
 // Function to load all the m,essages when page loads
